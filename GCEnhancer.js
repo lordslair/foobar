@@ -2,8 +2,8 @@
 // @name           Gobland Clan Enhancer
 // @namespace      GCEnhancer
 // @description    Replaces part of informations in game to make more visible information related to clan's players, allies, and ennemies.
-// @include        http://games.gobland.fr
-// @include        https://games.gobland.fr
+// @include        http://games.gobland.fr/*
+// @include        https://games.gobland.fr/*
 // @copyright      lordslair
 // @license        https://creativecommons.org/licenses/by-sa/4.0/
 // @version        0.0.6
