@@ -6,8 +6,8 @@
 // @include        https://games.gobland.fr
 // @copyright      lordslair
 // @version        0.0.2
-// @downloadURL    
-// @updateURL      
+// @downloadURL    https://greasyfork.org/scripts/370776-gobland-clan-enhancer/code/Gobland%20Clan%20Enhancer.user.js
+// @updateURL      https://greasyfork.org/scripts/370776-gobland-clan-enhancer/code/Gobland%20Clan%20Enhancer.user.js
 // ==/UserScript==
 // Heavily inspired by http://userscripts-mirror.org/scripts/show/41369
 
