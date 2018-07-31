@@ -6,7 +6,7 @@
 // @include        https://games.gobland.fr
 // @copyright      lordslair
 // @license        https://creativecommons.org/licenses/by-sa/4.0/
-// @version        0.0.4
+// @version        0.0.5
 // @downloadURL    https://raw.githubusercontent.com/lordslair/foobar/master/GCEnhancer.js
 // @updateURL      https://raw.githubusercontent.com/lordslair/foobar/master/GCEnhancer.js
 // ==/UserScript==
