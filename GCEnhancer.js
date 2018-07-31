@@ -5,7 +5,67 @@
 // @include        http://games.gobland.fr
 // @include        https://games.gobland.fr
 // @copyright      lordslair
-// @version        0.0.1
+// @version        0.0.2
 // @downloadURL    
 // @updateURL      
 // ==/UserScript==
+// Heavily inspired by http://userscripts-mirror.org/scripts/show/41369
+
+(function () {
+    'use strict';
+
+    var words = {
+        '((347|348|349|350|351|352|353|354|355|356|357))' : '✅', // Clan
+//      '((93))'                                          : '💛', // Alliés
+//      '((214))'                                         : '🆘', // Ennemis
+    };
+
+    //////////////////////////////////////////////////////////////////////////////
+    // This is where the real code is
+    // Don't edit below this
+    //////////////////////////////////////////////////////////////////////////////
+
+    var regexs = [], replacements = [],
+        tagsWhitelist = ['PRE', 'BLOCKQUOTE', 'CODE', 'INPUT', 'BUTTON', 'TEXTAREA'],
+        rIsRegexp = /^\/(.+)\/([gim]+)?$/,
+        word, text, texts, i, userRegexp;
+
+    // Escaping regex pattern
+    function prepareRegex(string) {
+        return string.replace(/(\({2}|([\[\]\^\&\$\.\?\/\\\+\{\}])|\)$)/g, '\\$1');
+    }
+
+    // function to decide whether a parent tag will have its text replaced or not
+    function isTagOk(tag) {
+        return tagsWhitelist.indexOf(tag) === -1;
+    }
+    // convert the 'words' JSON object to an Array
+    for (word in words) {
+        if ( typeof word === 'string' && words.hasOwnProperty(word) ) {
+            userRegexp = word.match(rIsRegexp);
+
+            // add the search/needle/query
+            if (userRegexp) {
+                regexs.push(new RegExp(userRegexp[1], 'g'));
+            } else {
+                regexs.push(
+                    new RegExp(prepareRegex(word).replace(/\\?\*/g, function (fullMatch) {
+                        return fullMatch === '\\*' ? '*' : '[^ ]*';
+                    }), 'g')
+                );
+            }
+            replacements.push( '($1) ' + words[word]);
+        }
+    }
+
+    // do the replacement
+    texts = document.evaluate('//body//text()[ normalize-space(.) != "" ]', document, null, 6, null);
+    for (i = 0; text = texts.snapshotItem(i); i += 1) {
+        if ( tagsWhitelist.indexOf(text.parentNode.tagName) ) {
+            regexs.forEach(function (value, index) {
+                text.data = text.data.replace( value, replacements[index] );
+            });
+        }
+    }
+
+}());
