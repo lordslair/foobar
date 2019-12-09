@@ -8,6 +8,7 @@
 -A INPUT -p tcp --dport 22                     -m comment --comment "INPUT SSH"    -j ACCEPT
 -A INPUT -p tcp --dport 80                     -m comment --comment "INPUT HTTP"   -j ACCEPT
 -A INPUT -p tcp --dport 443                    -m comment --comment "INPUT HTTPS"  -j ACCEPT
+-A INPUT -p icmp                                                                   -j ACCEPT
 
 :FORWARD ACCEPT [0:0]
 :OUTPUT DROP [3078:641437]
@@ -19,4 +20,5 @@
 -A OUTPUT -p tcp --dport 80                    -m comment --comment "OUTPUT HTTP"  -j ACCEPT
 -A OUTPUT -p udp --dport 123                   -m comment --comment "OUTPUT NTP"   -j ACCEPT
 -A OUTPUT -p tcp --dport 443                   -m comment --comment "OUTPUT HTTPS" -j ACCEPT
+-A OUTPUT -p icmp                                                                  -j ACCEPT
 COMMIT
