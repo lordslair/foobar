@@ -1,0 +1,5 @@
+# m h   dom mon dow  command
+# PCS
+0   1    *   *   *   /usr/local/bin/backup-PCS.sh all
+# PCA
+00  3    *   *   *   /usr/local/bin/backup-PCA.sh all
