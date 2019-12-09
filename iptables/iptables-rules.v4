@@ -20,5 +20,5 @@
 -A OUTPUT -p tcp --dport 80                    -m comment --comment "OUTPUT HTTP"  -j ACCEPT
 -A OUTPUT -p udp --dport 123                   -m comment --comment "OUTPUT NTP"   -j ACCEPT
 -A OUTPUT -p tcp --dport 443                   -m comment --comment "OUTPUT HTTPS" -j ACCEPT
--A OUTPUT -p icmp                                                                  -j ACCEPT
+-A OUTPUT -p icmp                              -m comment --comment "OUTPUT ICMP"  -j ACCEPT
 COMMIT
