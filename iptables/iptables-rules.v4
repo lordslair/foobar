@@ -8,7 +8,7 @@
 -A INPUT -p tcp --dport 22                     -m comment --comment "INPUT SSH"    -j ACCEPT
 -A INPUT -p tcp --dport 80                     -m comment --comment "INPUT HTTP"   -j ACCEPT
 -A INPUT -p tcp --dport 443                    -m comment --comment "INPUT HTTPS"  -j ACCEPT
--A INPUT -p icmp                                                                   -j ACCEPT
+-A INPUT -p icmp                               -m comment --comment "INPUT ICMP"   -j ACCEPT
 
 :FORWARD ACCEPT [0:0]
 :OUTPUT DROP [3078:641437]
