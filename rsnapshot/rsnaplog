@@ -1,0 +1,67 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+use Term::ANSIColor;
+
+my $log_dir = '/var/log';
+my $backup_dir = '/backup';
+
+my $log_list = `ls $log_dir/rsnapshot*.log`;
+my @log_list = split('\n', $log_list);
+
+printf("%-12s : %7s : %7s : %7s : %7s |\n", '============', '=======','=======','=======','=======');
+printf("%-12s : %7s : %7s : %7s : %7s |\n", 'NAME', 'HOURLY', 'DAILY', 'WEEKLY', 'MONTHLY');
+printf("%-12s : %7s : %7s : %7s : %7s |\n", '------------', '-------','-------','-------','-------');
+
+foreach my $log (@log_list)
+{
+    if ( $log =~ /.*rsnapshot-([\w-]*).log$/)
+    {
+        my $name    = $1;
+        my $end_h_r = my $end_d_r = my $end_w_r = my $end_m_r = colored('KO', 'bold red');
+        my $size_h  = my $size_d = my $size_w = my $size_m = colored('N/A', 'bold red');
+        my $color   = 'white';
+
+        if ( -d "$backup_dir/$name/hourly.0" )
+        {
+            my $end_h = `grep hourly  $log | tail -1`;
+            if ( $end_h =~ /successfully$/ ) { $color = 'bold green' } else { $color = 'bold red' }
+
+            $size_h = `du -sh $backup_dir/$name/hourly.0  | awk {'print \$1'}`;
+            chomp($size_h);
+            $size_h = colored($size_h, $color);
+        }
+        if ( -d "$backup_dir/$name/daily.0" )
+        {
+            my $end_d = `grep daily   $log | tail -1`;
+            if ( $end_d =~ /successfully$/ ) { $color = 'bold green' } else { $color = 'bold red' }
+
+            $size_d = `du -sh $backup_dir/$name/hourly.0  | awk {'print \$1'}`;
+            chomp($size_d);
+            $size_d = colored($size_d, 'bold green');
+        }
+        if ( -d "$backup_dir/$name/weekly.0" )
+        {
+            my $end_w = `grep weekly  $log | tail -1`;
+            if ( $end_w =~ /successfully$/ ) { $color = 'bold green' } else { $color = 'bold red' }
+
+            $size_w = `du -sh $backup_dir/$name/weekly.0  | awk {'print \$1'}`;
+            chomp($size_w);
+            $size_w = colored($size_w, 'bold green');
+        }
+        if ( -d "$backup_dir/$name/monthly.0" )
+        {
+            my $end_m = `grep monthly $log | tail -1`;
+            if ( $end_m =~ /successfully$/ ) { $color = 'bold green' } else { $color = 'bold red' }
+
+            $size_m = `du -sh $backup_dir/$name/monthly.0 | awk {'print \$1'}`;
+            chomp($size_m);
+            $size_m = colored($size_m, 'bold green');
+        }
+
+        printf("%-24s : %18s : %18s : %18s : %18s |\n",colored($name, 'blue cyan'), $size_h, $size_d, $size_w, $size_m);
+    }
+}
+
+printf("%-12s : %7s : %7s : %7s : %7s |\n", '============', '=======','=======','=======','=======');
