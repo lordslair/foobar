@@ -1,0 +1,9 @@
+# cp -a iptables-persistent /usr/sbin/
+# cp -a iptables-status /usr/local/bin/
+# cp -a iptables-persistent.conf /etc/default/
+# cp -a iptables-persistent.service /lib/systemd/system/
+# cp -a iptables-rules.v4 /etc/iptables/rules
+#
+#
+# service iptables-persistent status
+# service iptables-persistent restart
