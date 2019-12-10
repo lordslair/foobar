@@ -50,22 +50,28 @@ foreach my $line (@iptables)
 {   
     my $accept = colored("ACCEPT", 'white bold on_green');
     my $drop   = colored("DROP", 'white bold on_red');
+    my $tab    = '';
 
     $line =~ s/ACCEPT/$accept/g;
     $line =~ s/DROP/$drop/g;
 
-    # Comment detection
-    if ( $line =~ /\/[*] (.*) [*]\// )
-    {   
-        my $comment = colored($1, 'bold green');
-        $line =~ s/\/[*] (.*) [*]\//\t\t\t$comment/g;
-    }
-
     # Protocol detection
     if ( $line =~ /(tcp|udp)/ )
-    {   
+    {
         my $protocol = colored($1, 'bold cyan');
         $line =~ s/(tcp|udp)/$protocol/g;
+        $tab = "\t";
+    }
+    else
+    {
+        $tab = "\t\t\t";
+    }
+
+    # Comment detection
+    if ( $line =~ /\/[*] (.*) [*]\// )
+    {
+        my $comment = colored($1, 'bold green');
+        $line =~ s/\/[*] (.*) [*]\//$tab$comment/g;
     }
 
     print $line."\n";
