@@ -10,9 +10,9 @@ my $backup_dir = '/backup';
 my $log_list = `ls $log_dir/rsnapshot*.log`;
 my @log_list = split('\n', $log_list);
 
-printf("%-12s : %7s : %7s : %7s : %7s |\n", '============', '=======','=======','=======','=======');
-printf("%-12s : %7s : %7s : %7s : %7s |\n", 'NAME', 'HOURLY', 'DAILY', 'WEEKLY', 'MONTHLY');
-printf("%-12s : %7s : %7s : %7s : %7s |\n", '------------', '-------','-------','-------','-------');
+printf("%-13s : %7s : %7s : %7s : %7s |\n", '============', '=======','=======','=======','=======');
+printf("%-13s : %7s : %7s : %7s : %7s |\n", 'NAME', 'HOURLY', 'DAILY', 'WEEKLY', 'MONTHLY');
+printf("%-13s : %7s : %7s : %7s : %7s |\n", '------------', '-------','-------','-------','-------');
 
 foreach my $log (@log_list)
 {
@@ -60,8 +60,8 @@ foreach my $log (@log_list)
             $size_m = colored($size_m, 'bold green');
         }
 
-        printf("%-24s : %18s : %18s : %18s : %18s |\n",colored($name, 'blue cyan'), $size_h, $size_d, $size_w, $size_m);
+        printf("%-25s : %18s : %18s : %18s : %18s |\n",colored($name, 'blue cyan'), $size_h, $size_d, $size_w, $size_m);
     }
 }
 
-printf("%-12s : %7s : %7s : %7s : %7s |\n", '============', '=======','=======','=======','=======');
+printf("%-13s : %7s : %7s : %7s : %7s |\n", '============', '=======','=======','=======','=======');
