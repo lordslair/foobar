@@ -16,7 +16,7 @@ USER='postgres'
 
 if [ ! -d $DEST ]
 then
-    if [[ -e '/var/lib/postgresql' ]]
+    if [[ ! -e '/var/lib/postgresql' ]]
     then
         echo "WARN: No PG dir found. Is it installed ?"
     else
