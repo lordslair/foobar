@@ -26,4 +26,5 @@ rsync -a ../iptables/iptables-status             $DST:/usr/local/bin/
 rsync -a ../iptables/iptables-persistent.conf    $DST:/etc/default/
 rsync -a ../iptables/iptables-persistent         $DST:/usr/sbin/
 rsync -a ../iptables/iptables-persistent.service $DST:/lib/systemd/system/
+rsync -a ../snmp/snmpd.conf                      $DST:/etc/snmp/
 echo "... copy finished"
