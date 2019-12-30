@@ -7,7 +7,6 @@ then
     echo '    postexec [rm the DB dump]'
 fi
 
-DB='postgres'
 PDB='/root/.pdb'
 DEST='/var/lib/postgresql/11/dump'
 HOST='localhost'
@@ -29,29 +28,44 @@ case $1 in
 preexec) if [[ -e "$PDB" ]]
 then
     PASS=`cat $PDB`
-    echo [preexec] Backuping ...
-    pg_dump --dbname=postgresql://$USER:$PASS@$HOST:$PORT/$DB > $DEST/dump-$DB.SQL
-    if [[ -e "$DEST/dump-$DB.SQL" ]]
-    then
-        chmod 600 $DEST/dump-$DB.SQL
-    else
-        echo "WARN: Dump $DEST/dump-$DB.SQL not created. Shit happened !"
-    fi
-    echo [preexec] ... done
+
+    echo -n "[preexec] Listing DBs ... "
+    DBLIST=`su postgres -c "psql -l" | grep UTF | awk '{print $1}' | grep -v "template"`
+    echo $DBLIST
+
+    for DB in $DBLIST
+    do
+        echo -n "[preexec] Backuping ($DB) ... "
+        pg_dump --dbname=postgresql://$USER:$PASS@$HOST:$PORT/$DB > $DEST/dump-$DB.SQL
+        if [[ -e "$DEST/dump-$DB.SQL" ]]
+        then
+            chmod 600 $DEST/dump-$DB.SQL
+        else
+            echo "WARN: Dump $DEST/dump-$DB.SQL not created. Shit happened !"
+        fi
+        echo "done"
+    done
 else
     echo "WARN: The password file $PDB does not exist"
 fi
 ;;
 postexec) if [[ -e "$PDB" ]]
 then
-    echo [postexec] Cleaning ...
-    if [[ -e "$DEST/dump-$DB.SQL" ]]
-    then
-        rm -rf $DEST/dump-$DB.SQL
-    else
-        echo "WARN: The SQL dump file $DEST/dump-$DB.SQL does not exist"
-    fi
-    echo [postexec] ... done
+    echo -n "[postexec] Listing DBs ... "
+    DBLIST=`su postgres -c "psql -l" | grep UTF | awk '{print $1}' | grep -v "template"`
+    echo $DBLIST
+
+    for DB in $DBLIST
+    do
+        if [[ -e "$DEST/dump-$DB.SQL" ]]
+        then
+            echo -n "[postexec] Deletiing ($DB) ... "
+            rm -rf $DEST/dump-$DB.SQL
+            echo "done"
+        else
+            echo "WARN: The SQL dump file $DEST/dump-$DB.SQL does not exist"
+        fi
+    done
 else
     echo "WARN: The password file $PDB does not exist"
 fi
