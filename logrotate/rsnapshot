@@ -1,0 +1,18 @@
+/var/log/rsnapshot.log {
+	rotate 6
+	monthly
+	compress
+	missingok
+}
+/var/log/rsnapshot/rsnapshot-*.log {
+	rotate 6
+	monthly
+	compress
+	missingok
+}
+/var/log/rsnapshot/rsync-*.log {
+	rotate 6
+	monthly
+	compress
+	missingok
+}

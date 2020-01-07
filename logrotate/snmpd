@@ -1,0 +1,6 @@
+/var/log/snmp/snmpd.log {
+	rotate 4
+	weekly
+	compress
+	missingok
+}
