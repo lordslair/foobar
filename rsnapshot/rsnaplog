@@ -4,7 +4,7 @@ use warnings;
 
 use Term::ANSIColor;
 
-my $log_dir = '/var/log';
+my $log_dir = '/var/log/rsnapshot';
 my $backup_dir = '/backup';
 
 my $log_list = `ls $log_dir/rsnapshot*.log`;
