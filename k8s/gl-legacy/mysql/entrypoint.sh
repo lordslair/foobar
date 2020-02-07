@@ -11,7 +11,12 @@ apt-get update \
     && mv /usr/local/mysql/my.cnf /etc/mysql/my.cnf \
     && useradd --system mysql \
     && chown mysql:mysql /var/lib/mysql \
-    && ./scripts/mysql_install_db --datadir=/var/lib/mysql --user=mysql
+    && ./scripts/mysql_install_db --datadir=/var/lib/mysql --user=mysql \
+    && /usr/local/mysql/bin/mysql --defaults-file=/etc/mysql/my.cnf -e "DROP USER ''@'localhost'" && \
+    && /usr/local/mysql/bin/mysql --defaults-file=/etc/mysql/my.cnf -e "DROP DATABASE test" && \
+    && /usr/local/mysql/bin/mysql --defaults-file=/etc/mysql/my.cnf -e "CREATE USER ‘root’@’10.%’ IDENTIFIED BY ‘$MYSQL_ROOT_PASSWORD’;" && \
+    && /usr/local/mysql/bin/mysql --defaults-file=/etc/mysql/my.cnf -e "GRANT ALL ON *.* TO ‘root’@‘10.%’ WITH GRANT OPTION;" && \
+    && /usr/local/mysql/bin/mysql --defaults-file=/etc/mysql/my.cnf -e "FLUSH PRIVILEGES"
 
 echo "`date +"%F %X"` Build done ..."
 
