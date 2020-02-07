@@ -8,12 +8,15 @@ apt-get update \
     && tar -xzf /tmp/mysql.tar.gz --no-same-owner -C /usr/local/mysql --strip-components=1 \
     && rm -rf /tmp/mysql.tar.gz \
     && mkdir /etc/mysql  \
-    && mv /usr/local/mysql/my.cnf /etc/mysql/my.cnf \
+    && mv /usr/local/mysql/my.cnf /etc/my.cnf \
     && useradd --system mysql \
     && chown mysql:mysql /var/lib/mysql \
     && cd /usr/local/mysql \
-    && ./scripts/mysql_install_db --datadir=/var/lib/mysql --user=mysql \
-    && /usr/local/mysql/bin/mysql --defaults-file=/etc/mysql/my.cnf < /usr/local/mysql/mysql_secure_installation.SQL
+    && ./scripts/mysql_install_db --datadir=/var/lib/mysql --user=mysql
+
+/usr/local/mysql/support-files/mysql.server start
+/usr/local/mysql/bin/mysql --defaults-file=/etc/my.cnf < /usr/local/mysql/mysql_secure_installation.SQL
+/usr/local/mysql/support-files/mysql.server stop
 
 echo "`date +"%F %X"` Build done ..."
 
