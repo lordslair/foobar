@@ -11,6 +11,7 @@ apt-get update \
     && mv /usr/local/mysql/my.cnf /etc/mysql/my.cnf \
     && useradd --system mysql \
     && chown mysql:mysql /var/lib/mysql \
+    && cd /usr/local/mysql \
     && ./scripts/mysql_install_db --datadir=/var/lib/mysql --user=mysql \
     && /usr/local/mysql/bin/mysql --defaults-file=/etc/mysql/my.cnf < /usr/local/mysql/mysql_secure_installation.SQL
 
