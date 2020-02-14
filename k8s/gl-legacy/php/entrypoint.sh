@@ -8,7 +8,9 @@ apk update --no-cache \
     && cp /usr/share/zoneinfo/Europe/Paris /etc/localtime \
     && apk del .build-deps \
     && docker-php-ext-install mysql \
-    && docker-php-ext-enable mysql
+    && docker-php-ext-enable mysql \
+    && docker-php-ext-install mysqli \
+    && docker-php-ext-enable mysqli
 
 echo "`date +"%F %X"` Build done ..."
 
