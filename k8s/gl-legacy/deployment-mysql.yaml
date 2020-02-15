@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gobland-legacy-mysql
+  labels:
+    tier: backend
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+        tier: backend
+    spec:
+
+      initContainers:
+      - name: gobland-legacy-mysql-init
+        image: busybox
+        volumeMounts:
+        - name: gobland-legacy-mysql-bin
+          mountPath: /usr/local/mysql
+        - name: gobland-legacy-mysql-db
+          mountPath: /var/lib/mysql
+        command: ["/bin/sh"]
+        args: [
+         "-c",
+         "(
+              wget   https://github.com/lordslair/foobar/archive/master.zip -O /tmp/foobar.zip &&
+              unzip  /tmp/foobar.zip -d tmp &&
+              cp -a  /tmp/foobar-master/k8s/gl-legacy/mysql/entrypoint.sh /usr/local/mysql/entrypoint.sh &&
+              cp -a  /tmp/foobar-master/k8s/gl-legacy/mysql/my.cnf        /usr/local/mysql/my.cnf &&
+              rm -rf /tmp/foobar-master /tmp/foobar.zip
+          ) || echo 1"
+        ]
+
+      containers:
+      - image: debian:stretch-slim
+        name: gobland-legacy-mysql
+        command: ["/usr/local/mysql/entrypoint.sh"]
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: '<MYSQL_PASSWORD>'
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: gobland-legacy-mysql-db
+          mountPath: /var/lib/mysql
+        - name: gobland-legacy-mysql-bin
+          mountPath: /usr/local/mysql
+
+      volumes:
+      - name: gobland-legacy-mysql-db
+        persistentVolumeClaim:
+          claimName: gobland-legacy-mysql-db
+      - name: gobland-legacy-mysql-bin
+        persistentVolumeClaim:
+          claimName: gobland-legacy-mysql-bin
