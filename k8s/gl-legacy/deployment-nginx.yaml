@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gobland-legacy-nginx
+  labels:
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+      tier: backend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nginx
+        tier: backend
+    spec:
+
+      containers:
+      - name: gobland-legacy-nginx
+        image: nginx:stable-alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        volumeMounts:
+        - mountPath: /code
+          name: code
+        - name: config
+          mountPath: /etc/nginx/conf.d
+      restartPolicy: Always
+      
+      volumes:
+      - name: code
+        persistentVolumeClaim:
+          claimName: gobland-legacy-code-php
+      - name: config
+        configMap:
+          name: gobland-legacy-nginx
+          items:
+          - key: config
+            path: site.conf
