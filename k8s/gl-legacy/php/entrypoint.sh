@@ -6,6 +6,7 @@ apk update --no-cache \
     && apk add --no-cache --virtual .build-deps \
                                     tzdata \
     && cp /usr/share/zoneinfo/Europe/Paris /etc/localtime \
+    && echo 'date.timezone = Europe/Paris' > /usr/local/etc/php/conf.d/date.timezone.ini \
     && apk del .build-deps \
     && docker-php-ext-install mysql \
     && docker-php-ext-enable mysql \
