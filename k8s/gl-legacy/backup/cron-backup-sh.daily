@@ -10,7 +10,7 @@ db_pass=$MARIADB_ROOT_PASSWORD
 bk_path='/backup'
 
 for db_name in `echo $DBLIST | tr "," "\n"`;do
-    DEST="$bk_path/$db_name/$PERIOD/$DAY/db/"
+    DEST="$bk_path/$db_name/$PERIOD/"
     NOW=$(date +'%Y-%m-%d %H:%M:%S')
 
     if [ ! -d "$DEST" ]; then
@@ -18,11 +18,11 @@ for db_name in `echo $DBLIST | tr "," "\n"`;do
     fi
 
     echo "$NOW [$PERIOD] Dumping : $db_host/$db_name"
-    mysqldump --opt --lock-tables --user=$db_user --password=$db_pass --host=$db_host $db_name > $DEST/dump-$db_name.SQL
-    if [[ -e "$DEST/dump-$db_name.SQL" ]]
+    mysqldump --opt --lock-tables --user=$db_user --password=$db_pass --host=$db_host $db_name > $DEST/dump-$db_name-$DAY.SQL
+    if [[ -e "$DEST/dump-$db_name-$DAY.SQL" ]]
         then
-            bzip2 -f -9 $DEST/dump-$db_name.SQL
+            bzip2 -f -9 $DEST/dump-$db_name-$DAY.SQL
         else
-            echo "$NOW [$PERIOD] WARN: Dump $DEST/dump-$db_name.SQL not created. Shit happened !"
+            echo "$NOW [$PERIOD] WARN: Dump $DEST/dump-$db_name-$DAY.SQL not created. Shit happened !"
         fi
 done;
