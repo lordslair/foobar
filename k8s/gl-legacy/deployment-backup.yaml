@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gobland-legacy-backup
+  labels:
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backup
+      tier: backend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: backup
+        tier: backend
+    spec:
+      initContainers:
+      - name: gobland-legacy-backup-init
+        image: busybox
+        volumeMounts:
+        - name: backup
+          mountPath: /backup
+        command: ["/bin/sh"]
+        args: [
+         "-c",
+         "(
+              wget   https://github.com/lordslair/foobar/archive/master.zip -O /backup/foobar.zip &&
+              unzip  /backup/foobar.zip -d /backup/ &&
+              cp -a  /backup/foobar-master/k8s/gl-legacy/backup/* /backup/ &&
+              rm -rf /backup/foobar-master /backup/foobar.zip
+          ) || echo 1"
+        ]
+      containers:
+      - name: gobland-legacy-backup
+        image: alpine:3.2
+        command: ["/backup/entrypoint.sh"]
+        env:
+        - name: DBLIST
+          value: "mysql,forum"
+        - name: MARIADB_ROOT_PASSWORD
+          value: Trustno1!
+        volumeMounts:
+        - mountPath: /backup
+          name: backup
+      restartPolicy: Always
+      volumes:
+      - name: backup
+        persistentVolumeClaim:
+          claimName: gobland-legacy-backup-db
