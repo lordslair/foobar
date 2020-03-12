@@ -41,6 +41,11 @@ spec:
       - name: gobland-legacy-php
         image: php:5.5.35-fpm-alpine
         command: ["/code/entrypoint.sh"]
+        env:
+        - name: SSMTP_MAILHUB
+          value: '<SSMTP_MAILHUB>'
+        - name: SSMTP_HOSTNAME
+          value: '<SSMTP_HOSTNAME>'
         volumeMounts:
         - mountPath: /code
           name: code
