@@ -3,7 +3,7 @@
 echo "`date +"%F %X"` Building PHP dependencies and system set-up ..."
 
 apk update --no-cache \
-    && apk add --no-cache ssmtp \
+    && apk add --no-cache ssmtp bind-tools \
     && echo 'root=postmaster'           > /etc/ssmtp/ssmtp.conf
     && echo "mailhub=$SSMTP_MAILHUB"   >> /etc/ssmtp/ssmtp.conf
     && echo 'UseTLS=YES'               >> /etc/ssmtp/ssmtp.conf
