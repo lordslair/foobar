@@ -4,14 +4,6 @@ echo "`date +"%F %X"` Building PHP dependencies and system set-up ..."
 
 apk update --no-cache \
     && apk add --no-cache ssmtp bind-tools \
-<<<<<<< HEAD
-=======
-#    && echo 'root=postmaster'           > /etc/ssmtp/ssmtp.conf \
-#    && echo "mailhub=$SSMTP_MAILHUB"   >> /etc/ssmtp/ssmtp.conf \
-#    && echo 'UseTLS=YES'               >> /etc/ssmtp/ssmtp.conf \
-#    && echo 'UseSTARTTLS=YES'          >> /etc/ssmtp/ssmtp.conf \
-#    && echo "hostname=$SSMTP_HOSTNAME" >> /etc/ssmtp/ssmtp.conf \
->>>>>>> 80060f079ddac169464adaafdc6ca5079536aebc
     && apk add --no-cache --virtual .build-deps \
                                     tzdata \
     && cp /usr/share/zoneinfo/Europe/Paris /etc/localtime \
